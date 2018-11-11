@@ -1,4 +1,8 @@
-app.controller('brandController', function($scope, $http, brandService) {
+app.controller('brandController', function($scope, $controller, brandService) {
+	
+	$controller('baseController', {$scope:$scope});//让两个scope通用
+	
+	
 	// 查询品牌列表
 	// $scope.findAll = function() {
 	// brandService.findAll().success(function(data){
@@ -6,23 +10,7 @@ app.controller('brandController', function($scope, $http, brandService) {
 	// });
 	// }
 
-	// 分页控件配置 currentPage:当前页 totalItems:总记录数 itemPerPage:每页记录数
-	// perPageOptions:分页选项 onChange:当页码变更后，自动触发的方法
-	$scope.paginationConf = {
-		currentPage : 1,
-		totalItems : 10,
-		itemsPerPage : 10,
-		perPageOptions : [ 10, 20, 30, 40, 50 ],
-		onChange : function() {
-			$scope.reloadList();// 重新加载
-		}
-	};
-
-	// 刷新列表
-	$scope.reloadList = function() {
-		$scope.search($scope.paginationConf.currentPage,
-				$scope.paginationConf.itemsPerPage);
-	}
+	
 
 	// $scope.findPage = function(page, size) {
 	// brandService.findPage(page, size)
@@ -58,16 +46,7 @@ app.controller('brandController', function($scope, $http, brandService) {
 	}
 
 	// 删除
-	$scope.selectIds = [];// 用户勾选的id集合
-
-	$scope.updateSelection = function($event, id) {
-		if ($event.target.checked) {
-			$scope.selectIds.push(id);// push向集合添加元素
-		} else {
-			var index = $scope.selectIds.indexOf(id);// 查找值的位置
-			$scope.selectIds.splice(index, 1);
-		}
-	}
+	
 
 	$scope.dele = function() {
 		if ($scope.selectIds.length > 0) {
