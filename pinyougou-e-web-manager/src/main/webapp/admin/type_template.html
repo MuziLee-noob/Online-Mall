@@ -77,28 +77,18 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr>
+			                          <tr ng-repeat="entity in list">
 			                              <td><input  type="checkbox"></td>			                              
-				                          <td>1</td>
-									      <td>手机</td>
-									      <td>联想,华为,中兴</td>
-									      <td>网络制式</td>									 
-									      <td></td>		                                                                  
+				                          <td>{{entity.id}}</td>
+									      <td>{{entity.name}}</td>
+									      <td>{{entity.brandIds}}</td>
+									      <td>{{entity.specIds}}</td>									 
+									      <td>{{entity.customAttributeItems}}</td>		                                                                  
 		                                  <td class="text-center">                                           
 		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
 		                                  </td>
 			                          </tr>
-									  <tr>
-			                              <td><input  type="checkbox"></td>			                              
-				                          <td>2</td>
-									      <td>服装</td>
-									      <td>七匹狼,雅戈尔</td>
-									      <td>服装尺码</td>									 
-									      <td></td>		                                                                  
-		                                  <td class="text-center">                                           
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
-		                                  </td>
-			                          </tr>
+									
 			                      </tbody>
 			                  </table>
 			                  <!--数据列表/-->                        
