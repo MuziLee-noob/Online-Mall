@@ -1,6 +1,7 @@
 package com.pinyougou.sellergoods.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,5 +82,11 @@ public class BrandServiceImpl implements BrandService {
 
 		return new PageResult(page.getTotal(), page.getResult());
 
+	}
+
+	@Override
+	public List<Map> selectOptionList() {
+		// TODO Auto-generated method stub
+		return brandMapper.selectOptionList();
 	}
 }

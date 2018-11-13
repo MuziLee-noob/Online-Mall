@@ -28,4 +28,15 @@ app.controller('baseController', function($scope) {
 			$scope.selectIds.splice(index, 1);
 		}
 	}
+
+	//将json转换为字符串
+	$scope.jsonToString = function(jsonString, key) {
+		var json = JSON.parse(jsonString);
+		var value = "";
+		value += json[0][key];
+		for (var i = 1; i < json.length; i++) {
+			value += "," + json[i][key];
+		}
+		return value;
+	}
 });
