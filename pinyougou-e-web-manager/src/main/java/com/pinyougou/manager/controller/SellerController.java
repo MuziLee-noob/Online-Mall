@@ -121,4 +121,15 @@ public class SellerController {
 		return sellerService.findPage(seller, page, rows);
 	}
 
+	@RequestMapping("/updateStatus.do")
+	public Result updateStatus(String sellerId, String status) {
+		try {
+			sellerService.updateStatus(sellerId, status);
+			return new Result(true, "成功");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false, "失败");
+		}
+	}
 }

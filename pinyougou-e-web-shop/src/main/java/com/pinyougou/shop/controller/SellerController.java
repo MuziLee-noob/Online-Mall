@@ -52,7 +52,7 @@ public class SellerController {
 	 * @param seller
 	 * @return
 	 */
-	@RequestMapping("/add")
+	@RequestMapping("/add.do")
 	public Result add(@RequestBody TbSeller seller) {
 		try {
 			sellerService.add(seller);
