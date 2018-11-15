@@ -1,6 +1,7 @@
 package com.pinyougou.manager.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -121,4 +122,13 @@ public class TypeTemplateController {
 		return typeTemplateService.findPage(typeTemplate, page, rows);
 	}
 
+	/**
+	 * 查询所有id，name
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/findOptionList")
+	public List<Map> findOptionList() {
+		return typeTemplateService.findOptionList();
+	}
 }
