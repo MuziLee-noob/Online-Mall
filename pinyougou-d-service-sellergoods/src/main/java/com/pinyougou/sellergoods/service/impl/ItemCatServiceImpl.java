@@ -1,5 +1,6 @@
 package com.pinyougou.sellergoods.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +77,21 @@ public class ItemCatServiceImpl implements ItemCatService {
 	 * 批量删除
 	 */
 	@Override
-	public void delete(Long[] ids) {
+	public List<Long> delete(Long[] ids) {
+		List<Long> failIds = new ArrayList<>();
 		for (Long id : ids) {
-			itemCatMapper.deleteByPrimaryKey(id);
+			TbItemCatExample example = new TbItemCatExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andParentIdEqualTo(id);
+			List<TbItemCat> list = itemCatMapper.selectByExample(example);
+			if (list != null && list.size() > 0) {
+				failIds.add(id);
+			} else {
+				itemCatMapper.deleteByPrimaryKey(id);
+			}
 		}
+
+		return failIds;
 	}
 
 	@Override

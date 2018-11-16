@@ -1,5 +1,6 @@
 package com.pinyougou.manager.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestBody;
@@ -99,9 +100,14 @@ public class ItemCatController {
 	 */
 	@RequestMapping("/delete")
 	public Result delete(Long[] ids) {
+		List<Long> failList = new ArrayList<>();
 		try {
-			itemCatService.delete(ids);
-			return new Result(true, "删除成功");
+			failList = itemCatService.delete(ids);
+			if (failList.size() > 0) {
+				return new Result(false, "以下id删除失败" + failList);
+			} else {
+				return new Result(true, "删除成功");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Result(false, "删除失败");

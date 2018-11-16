@@ -1,5 +1,5 @@
  //控制层 
-app.controller('itemCatController' ,function($scope,$controller   ,itemCatService){	
+app.controller('itemCatController' ,function($scope,$controller   ,itemCatService, typeTemplateService){	
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -33,7 +33,10 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	
 	//保存 
 	$scope.save=function(){				
-		var serviceObject;//服务层对象  				
+		var serviceObject;//服务层对象  			
+
+		$scope.entity.parentId = $scope.parentId;
+
 		if($scope.entity.id!=null){//如果有ID
 			serviceObject=itemCatService.update( $scope.entity ); //修改  
 		}else{
@@ -43,7 +46,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			function(response){
 				if(response.success){
 					//重新查询 
-		        	$scope.reloadList();//重新加载
+		        	$scope.findByParentId($scope.parentId);//重新加载
 				}else{
 					alert(response.message);
 				}
@@ -58,8 +61,11 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 		itemCatService.dele( $scope.selectIds ).success(
 			function(response){
 				if(response.success){
-					$scope.reloadList();//刷新列表
+					$scope.findByParentId($scope.parentId);//刷新列表
 					$scope.selectIds=[];
+				} else {
+					$scope.findByParentId($scope.parentId);//刷新列表
+					alert(response.message);
 				}						
 			}		
 		);				
@@ -76,8 +82,13 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 			}			
 		);
 	}
+
+	$scope.parentId = 0;//当前分类上级分类id
 	//根据上级分类id，查询分类列表
 	$scope.findByParentId = function(parentId) {
+
+		$scope.parentId = parentId;//将上级id存入变量中
+
 		itemCatService.findByParentId(parentId).success(
 			function(response) {
 				$scope.list = response;
@@ -86,7 +97,7 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 	}
 
 	$scope.grade = 1;//当前级别
-	$scope.parentId = 0;//当前分类上级分类id
+
 	//设置级别
 	$scope.setGrade = function(value) {
 		$scope.grade = value;
@@ -104,5 +115,15 @@ app.controller('itemCatController' ,function($scope,$controller   ,itemCatServic
 		}
 			
 		$scope.findByParentId(p_entity.id);
+	}
+
+	//查找所有模板信息
+	$scope.templateList = {};
+	$scope.findTemplateList = function() {
+		typeTemplateService.findOptionList().success(
+			function(response) {
+				$scope.templateList = {data:response};
+			}
+		);
 	}
 });	

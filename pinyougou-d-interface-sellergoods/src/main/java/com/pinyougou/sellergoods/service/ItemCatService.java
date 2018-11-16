@@ -51,7 +51,7 @@ public interface ItemCatService {
 	 * 
 	 * @param ids
 	 */
-	public void delete(Long[] ids);
+	public List<Long> delete(Long[] ids);
 
 	/**
 	 * 分页
