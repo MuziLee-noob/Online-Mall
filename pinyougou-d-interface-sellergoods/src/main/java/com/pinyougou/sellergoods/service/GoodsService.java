@@ -63,4 +63,19 @@ public interface GoodsService {
 	 */
 	public PageResult findPage(TbGoods goods, int pageNum, int pageSize);
 
+	/**
+	 * 修改状态
+	 * 
+	 * @param ids
+	 * @param status
+	 */
+	public void updateStauts(Long[] ids, String status);
+
+	/**
+	 * 修改上下架状态
+	 * 
+	 * @param ids
+	 * @param status
+	 */
+	public void updateMarketable(Long[] ids, String isMarketable);
 }

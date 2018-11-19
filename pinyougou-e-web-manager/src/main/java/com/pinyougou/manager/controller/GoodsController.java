@@ -105,4 +105,28 @@ public class GoodsController {
 		return goodsService.findPage(goods, page, rows);
 	}
 
+	@RequestMapping("/updateStatus")
+	public Result updateStatus(Long[] ids, String status) {
+		try {
+			goodsService.updateStauts(ids, status);
+			return new Result(true, "修改成功");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false, "修改失败");
+		}
+
+	}
+
+	@RequestMapping("/updateMarketable")
+	public Result updateMarketable(Long[] ids, String isMarketable) {
+		try {
+			goodsService.updateMarketable(ids, isMarketable);
+			return new Result(true, "修改成功");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new Result(false, "修改失败");
+		}
+	}
 }

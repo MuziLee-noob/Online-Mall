@@ -81,7 +81,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService, i
 
 	$scope.itemCatList = [];//商品分类列表
 	//查询商品分类列表
-	$scope.findItemList = function() {
+	$scope.findItemCatList = function() {
 		itemCatService.findAll().success(
 			function(response) {
 				for (var i = 0; i < response.length; i++) {
@@ -89,5 +89,19 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService, i
 				}
 			}
 		);
+	}
+
+	$scope.updateStatus = function(status) {
+		goodsService.updateStatus($scope.selectIds, status).success(
+			function(response){
+				if (response.success){
+					$scope.reloadList();
+					$scope.selectIds=[];
+				} else {
+					alert(response.message);
+				}
+				
+			}
+		)
 	}
 });	

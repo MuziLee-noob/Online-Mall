@@ -203,7 +203,9 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void delete(Long[] ids) {
 		for (Long id : ids) {
-			goodsMapper.deleteByPrimaryKey(id);
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			tbGoods.setIsDelete("1");// 表示逻辑删除
+			goodsMapper.updateByPrimaryKey(tbGoods);
 		}
 	}
 
@@ -213,7 +215,8 @@ public class GoodsServiceImpl implements GoodsService {
 
 		TbGoodsExample example = new TbGoodsExample();
 		Criteria criteria = example.createCriteria();
-
+		criteria.andIsDeleteIsNull();// 指定逻辑条件为未删除
+		criteria.andIsMarketableEqualTo("1");// 指定上架状态
 		if (goods != null) {
 			if (goods.getSellerId() != null && goods.getSellerId().length() > 0) {
 //				criteria.andSellerIdLike("%" + goods.getSellerId() + "%");
@@ -247,4 +250,23 @@ public class GoodsServiceImpl implements GoodsService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Override
+	public void updateStauts(Long[] ids, String status) {
+
+		for (Long id : ids) {
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			tbGoods.setAuditStatus(status);
+			goodsMapper.updateByPrimaryKey(tbGoods);
+		}
+	}
+
+	@Override
+	public void updateMarketable(Long[] ids, String isMarketable) {
+		for (Long id : ids) {
+			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+			tbGoods.setIsMarketable(isMarketable);
+			goodsMapper.updateByPrimaryKey(tbGoods);
+		}
+
+	}
 }
