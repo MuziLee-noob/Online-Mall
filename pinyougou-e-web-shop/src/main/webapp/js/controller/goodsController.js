@@ -270,4 +270,17 @@ app.controller('goodsController', function ($scope, $controller, $location, good
 			return false;
 		}
 	}
+
+	$scope.updateMarketable = function(isMarketable) {
+		
+		goodsService.updateMarketable(isMarketable).success(
+			function(response){
+				if (response.success) {
+					alert(response.message);
+				} else {
+					alert(response.message);
+				}
+			}
+		);
+	}
 });	

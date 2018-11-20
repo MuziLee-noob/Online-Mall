@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
@@ -37,6 +38,7 @@ import entity.PageResult;
  *
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
 	@Autowired
@@ -261,12 +263,10 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public void updateMarketable(Long[] ids, String isMarketable) {
-		for (Long id : ids) {
-			TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
-			tbGoods.setIsMarketable(isMarketable);
-			goodsMapper.updateByPrimaryKey(tbGoods);
-		}
+	public void updateMarketable(Long id, String isMarketable) {
+		TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+		tbGoods.setIsMarketable(isMarketable);
+		goodsMapper.updateByPrimaryKey(tbGoods);
 
 	}
 }

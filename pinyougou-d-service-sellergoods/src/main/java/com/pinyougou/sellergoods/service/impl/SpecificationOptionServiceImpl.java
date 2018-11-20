@@ -1,6 +1,10 @@
 package com.pinyougou.sellergoods.service.impl;
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -14,15 +18,17 @@ import entity.PageResult;
 
 /**
  * 服务实现层
+ * 
  * @author Administrator
  *
  */
 @Service
+@Transactional
 public class SpecificationOptionServiceImpl implements SpecificationOptionService {
 
 	@Autowired
 	private TbSpecificationOptionMapper specificationOptionMapper;
-	
+
 	/**
 	 * 查询全部
 	 */
@@ -36,8 +42,9 @@ public class SpecificationOptionServiceImpl implements SpecificationOptionServic
 	 */
 	@Override
 	public PageResult findPage(int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);		
-		Page<TbSpecificationOption> page=   (Page<TbSpecificationOption>) specificationOptionMapper.selectByExample(null);
+		PageHelper.startPage(pageNum, pageSize);
+		Page<TbSpecificationOption> page = (Page<TbSpecificationOption>) specificationOptionMapper
+				.selectByExample(null);
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
@@ -46,25 +53,25 @@ public class SpecificationOptionServiceImpl implements SpecificationOptionServic
 	 */
 	@Override
 	public void add(TbSpecificationOption specificationOption) {
-		specificationOptionMapper.insert(specificationOption);		
+		specificationOptionMapper.insert(specificationOption);
 	}
 
-	
 	/**
 	 * 修改
 	 */
 	@Override
-	public void update(TbSpecificationOption specificationOption){
+	public void update(TbSpecificationOption specificationOption) {
 		specificationOptionMapper.updateByPrimaryKey(specificationOption);
-	}	
-	
+	}
+
 	/**
 	 * 根据ID获取实体
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@Override
-	public TbSpecificationOption findOne(Long id){
+	public TbSpecificationOption findOne(Long id) {
 		return specificationOptionMapper.selectByPrimaryKey(id);
 	}
 
@@ -73,28 +80,28 @@ public class SpecificationOptionServiceImpl implements SpecificationOptionServic
 	 */
 	@Override
 	public void delete(Long[] ids) {
-		for(Long id:ids){
+		for (Long id : ids) {
 			specificationOptionMapper.deleteByPrimaryKey(id);
-		}		
+		}
 	}
-	
-	
-		@Override
+
+	@Override
 	public PageResult findPage(TbSpecificationOption specificationOption, int pageNum, int pageSize) {
 		PageHelper.startPage(pageNum, pageSize);
-		
-		TbSpecificationOptionExample example=new TbSpecificationOptionExample();
+
+		TbSpecificationOptionExample example = new TbSpecificationOptionExample();
 		Criteria criteria = example.createCriteria();
-		
-		if(specificationOption!=null){			
-						if(specificationOption.getOptionName()!=null && specificationOption.getOptionName().length()>0){
-				criteria.andOptionNameLike("%"+specificationOption.getOptionName()+"%");
+
+		if (specificationOption != null) {
+			if (specificationOption.getOptionName() != null && specificationOption.getOptionName().length() > 0) {
+				criteria.andOptionNameLike("%" + specificationOption.getOptionName() + "%");
 			}
-	
+
 		}
-		
-		Page<TbSpecificationOption> page= (Page<TbSpecificationOption>)specificationOptionMapper.selectByExample(example);		
+
+		Page<TbSpecificationOption> page = (Page<TbSpecificationOption>) specificationOptionMapper
+				.selectByExample(example);
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
 }

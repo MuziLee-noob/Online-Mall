@@ -29,4 +29,8 @@ app.service('goodsService',function($http){
 	this.search=function(page,rows,searchEntity){
 		return $http.post('../goods/search.do?page='+page+"&rows="+rows, searchEntity);
 	}    	
+
+	this.updateMarketable = function(ids, isMarketable) {
+		return $http.get('../goods/updateMarketable.do?ids=' + ids + "isMarketable=" + isMarketable);
+	}
 });

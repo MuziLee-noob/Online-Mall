@@ -77,5 +77,5 @@ public interface GoodsService {
 	 * @param ids
 	 * @param status
 	 */
-	public void updateMarketable(Long[] ids, String isMarketable);
+	public void updateMarketable(Long id, String isMarketable);
 }

@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.pojo.TbGoods;
-import com.pinyougou.pojogroup.Goods;
-import com.pinyougou.sellergoods.service.GoodsService;
+import com.pinyougou.content.service.ContentService;
+import com.pinyougou.pojo.TbContent;
 
 import entity.PageResult;
 import entity.Result;
@@ -21,11 +20,11 @@ import entity.Result;
  *
  */
 @RestController
-@RequestMapping("/goods")
-public class GoodsController {
+@RequestMapping("/content")
+public class ContentController {
 
 	@Reference
-	private GoodsService goodsService;
+	private ContentService contentService;
 
 	/**
 	 * 返回全部列表
@@ -33,8 +32,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findAll")
-	public List<TbGoods> findAll() {
-		return goodsService.findAll();
+	public List<TbContent> findAll() {
+		return contentService.findAll();
 	}
 
 	/**
@@ -44,19 +43,36 @@ public class GoodsController {
 	 */
 	@RequestMapping("/findPage")
 	public PageResult findPage(int page, int rows) {
-		return goodsService.findPage(page, rows);
+		return contentService.findPage(page, rows);
+	}
+
+	/**
+	 * 增加
+	 * 
+	 * @param content
+	 * @return
+	 */
+	@RequestMapping("/add")
+	public Result add(@RequestBody TbContent content) {
+		try {
+			contentService.add(content);
+			return new Result(true, "增加成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Result(false, "增加失败");
+		}
 	}
 
 	/**
 	 * 修改
 	 * 
-	 * @param goods
+	 * @param content
 	 * @return
 	 */
 	@RequestMapping("/update")
-	public Result update(@RequestBody Goods goods) {
+	public Result update(@RequestBody TbContent content) {
 		try {
-			goodsService.update(goods);
+			contentService.update(content);
 			return new Result(true, "修改成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,8 +87,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/findOne")
-	public Goods findOne(Long id) {
-		return goodsService.findOne(id);
+	public TbContent findOne(Long id) {
+		return contentService.findOne(id);
 	}
 
 	/**
@@ -84,7 +100,7 @@ public class GoodsController {
 	@RequestMapping("/delete")
 	public Result delete(Long[] ids) {
 		try {
-			goodsService.delete(ids);
+			contentService.delete(ids);
 			return new Result(true, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,32 +117,8 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/search")
-	public PageResult search(@RequestBody TbGoods goods, int page, int rows) {
-		return goodsService.findPage(goods, page, rows);
+	public PageResult search(@RequestBody TbContent content, int page, int rows) {
+		return contentService.findPage(content, page, rows);
 	}
 
-	@RequestMapping("/updateStatus")
-	public Result updateStatus(Long[] ids, String status) {
-		try {
-			goodsService.updateStauts(ids, status);
-			return new Result(true, "修改成功");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new Result(false, "修改失败");
-		}
-
-	}
-
-	@RequestMapping("/updateMarketable")
-	public Result updateMarketable(Long id, String isMarketable) {
-		try {
-			goodsService.updateMarketable(id, isMarketable);
-			return new Result(true, "修改成功");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new Result(false, "修改失败");
-		}
-	}
 }
