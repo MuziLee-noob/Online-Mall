@@ -85,7 +85,7 @@
                         <td>{{entity.title}}</td>
                         <td>{{entity.url}}</td>
                         <td>
-                            <img alt="" src="{{entity.pic}}"  width="100px" height="100px">
+                            <img alt="" src="{{entity.pic}}"  width="150px" height="100px">
                         </td>
                         <td>{{status[entity.status]}}</td>
                         <td>{{entity.sortOrder}}</td>
@@ -144,10 +144,9 @@
                             <td>图片</td>
                             <td><input type="file" id="file"> 
                                 <button class="btn btn-default" ng-click="uploadFile()">上传</button>
+                                <img alt="" src={{entity.pic}} width="150px" height="150px">
                             </td>
                            
-                            <td><img alt="" src={{entity.pic}} width="150px" height="150px"></td>
-
                         </tr>
                         <tr>
 

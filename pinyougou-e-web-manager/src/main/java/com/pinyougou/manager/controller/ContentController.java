@@ -54,6 +54,11 @@ public class ContentController {
 	 */
 	@RequestMapping("/add")
 	public Result add(@RequestBody TbContent content) {
+		String status = content.getStatus();
+		if (status == null || status.length() == 0 || "null".equals(status)) {
+			status = "1";
+		}
+		content.setStatus(status);
 		try {
 			contentService.add(content);
 			return new Result(true, "增加成功");
