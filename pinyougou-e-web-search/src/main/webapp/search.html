@@ -365,7 +365,8 @@
 											<i>{{item.price}}</i>
 										</strong>
 								</div>
-								<div class="attr">
+								<!-- 通过一种安全的方式将内容绑定到HTML元素上 -->
+								<div class="attr" ng-bind-html="item.title | trustHtml">
 									<em>{{item.title}}</em>
 								</div>
 								<div class="cu">
