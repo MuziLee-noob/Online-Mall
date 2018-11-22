@@ -38,6 +38,15 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 		 * map.put("rows", page.getContent());
 		 */
 
+		map.putAll(searchList(searchMap));
+		return map;
+	}
+
+	// 查询列表方法
+	private Map<String, Object> searchList(Map searchMap) {
+
+		Map<String, Object> map = new HashMap<>();
+
 		// 高亮显示关键词
 		HighlightQuery query = new SimpleHighlightQuery();
 
@@ -68,9 +77,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 			}
 
 		}
-
 		map.put("rows", page.getContent());
 		return map;
 	}
-
 }
