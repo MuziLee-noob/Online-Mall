@@ -15,6 +15,10 @@
   <module>pinyougou-d-interface-content</module>
   <module>pinyougou-d-service-content</module>
   <module>pinyougou-e-web-portal</module>
+  <module>pinyougou-a-solr-util</module>
+  <module>pinyougou-d-interface-search</module>
+  <module>pinyougou-d-service-search</module>
+  <module>pinyougou-e-web-search</module>
   </modules>
 	
   <!-- 集中定义依赖版本号 -->

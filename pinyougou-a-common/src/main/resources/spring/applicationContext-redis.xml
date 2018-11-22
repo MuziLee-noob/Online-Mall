@@ -17,13 +17,13 @@
   
    <!-- redis 相关配置 --> 
    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">  
-     <property name="maxIdle" value="300"/>   
+     <property name="maxIdle" value="300" />   
      <property name="maxWaitMillis" value="3000" />  
      <property name="testOnBorrow" value="true" />  
    </bean>  
   
    <bean id="JedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
-       p:host-name="127.0.0.1" p:port="6379" p:password="" p:pool-config-ref="poolConfig"/>  
+       p:host-name="192.168.25.135" p:port="6379" p:password="" p:pool-config-ref="poolConfig"/>  
    
    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">  
     	<property name="connectionFactory" ref="JedisConnectionFactory" />  
