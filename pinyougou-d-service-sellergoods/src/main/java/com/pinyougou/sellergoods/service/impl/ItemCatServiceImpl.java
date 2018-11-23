@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -114,12 +115,22 @@ public class ItemCatServiceImpl implements ItemCatService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	@Override
 	public List<TbItemCat> findByParentId(Long parentId) {
 
 		TbItemCatExample example = new TbItemCatExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andParentIdEqualTo(parentId);
+		// 将模板id放入缓存（以商品分类名称作为key）
+
+		List<TbItemCat> itemCatList = findAll();
+		for (TbItemCat itemcat : itemCatList) {
+			redisTemplate.boundHashOps("itemCat").put(itemcat.getName(), itemcat.getTypeId());
+		}
+		System.out.println("将模板id放入缓存");
 		return itemCatMapper.selectByExample(example);
 	}
 

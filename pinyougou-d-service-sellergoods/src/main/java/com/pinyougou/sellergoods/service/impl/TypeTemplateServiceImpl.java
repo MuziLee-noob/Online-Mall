@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Service;
@@ -113,7 +114,29 @@ public class TypeTemplateServiceImpl implements TypeTemplateService {
 		}
 
 		Page<TbTypeTemplate> page = (Page<TbTypeTemplate>) typeTemplateMapper.selectByExample(example);
+
+		saveToRedis();
+
 		return new PageResult(page.getTotal(), page.getResult());
+	}
+
+	@Autowired
+	private RedisTemplate redisTemplate;
+
+	// 将数据放入缓存
+	private void saveToRedis() {
+		// 查询所有的模板数据
+		List<TbTypeTemplate> templateList = findAll();
+		for (TbTypeTemplate template : templateList) {
+			// 品牌列表
+			List<Map> brandList = JSON.parseArray(template.getBrandIds(), Map.class);
+			redisTemplate.boundHashOps("brandList").put(template.getId(), brandList);
+
+			// 规格列表
+			List<Map> specList = findSpecList(template.getId());//
+			redisTemplate.boundHashOps("specList").put(template.getId(), specList);
+		}
+		System.out.println("缓存品牌列表");
 	}
 
 	@Override
