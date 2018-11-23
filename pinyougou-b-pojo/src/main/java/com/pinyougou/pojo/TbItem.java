@@ -52,7 +52,7 @@ public class TbItem implements Serializable {
 	private String sellerId;
 
 	private String cartThumbnail;
-
+	@Field("item_category")
 	private String category;
 
 	@Field("item_brand")
