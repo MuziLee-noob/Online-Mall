@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.core.query.Criteria;
@@ -40,7 +41,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 	public Map<String, Object> search(Map searchMap) {
 
 		Map<String, Object> map = new HashMap<>();
-
+		// 空格处理
+		String keywords = (String) searchMap.get("keywords");
+		searchMap.put("keywords", keywords.replaceAll(" ", ""));// 去掉空格
 		/*
 		 * Query query = new SimpleQuery(); Criteria criteria = new
 		 * Criteria("item_keywords").is(searchMap.get("keywords"));
@@ -115,6 +118,55 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
 		}
 
+		// 1.5按照价格进行筛选
+		if (!"".equals(searchMap.get("price"))) { // 如果用户选择了价格筛选
+			String price_str = (String) searchMap.get("price");
+			String[] price = price_str.split("-");
+			// 大于等于最低价格
+			if (!price[0].equals("0")) { // 如果最低价格不等于0
+				FilterQuery filterQuery = new SimpleFilterQuery();
+				Criteria filterCriteria = new Criteria("item_price").greaterThanEqual(price[0]);
+				filterQuery.addCriteria(filterCriteria);
+				query.addFilterQuery(filterQuery);
+			}
+			// 小于等于最高价格
+			if (!price[1].equals("*")) { // 如果最高价格不等于*
+				FilterQuery filterQuery = new SimpleFilterQuery();
+				Criteria filterCriteria = new Criteria("item_price").lessThanEqual(price[1]);
+				filterQuery.addCriteria(filterCriteria);
+				query.addFilterQuery(filterQuery);
+			}
+
+		}
+
+		// 1.6 分页查询
+		Integer pageNo = (Integer) searchMap.get("pageNo");
+		if (pageNo == null) {
+			pageNo = 1;
+		}
+		Integer pageSize = (Integer) searchMap.get("pageSize");
+		if (pageSize == null) {
+			pageSize = 20;
+		}
+
+		query.setOffset((pageNo - 1) * pageSize);// 起始索引
+		query.setRows(pageSize);
+
+		// 1.7按某个字段排序
+		String sortValue = (String) searchMap.get("sortValue");// 得到排序方式（升序/降序）
+		String sortField = (String) searchMap.get("sortField");// 排序字段
+
+		if (sortValue != null && !"".equals(sortValue)) {
+
+			if (sortValue.equals("asc")) {
+				Sort sort = new Sort(Sort.Direction.ASC, sortField);
+				query.addSort(sort);
+			} else if (sortValue.equals("desc")) {
+				Sort sort = new Sort(Sort.Direction.DESC, sortField);
+				query.addSort(sort);
+			}
+		}
+
 		// *************** 获取高亮结果集 ****************
 		HighlightPage<TbItem> page = solrTemplate.queryForHighlightPage(query, TbItem.class);// 返回一个高亮页对象
 		// 高亮入口集合
@@ -135,7 +187,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 			}
 
 		}
-		map.put("rows", page.getContent());
+		map.put("rows", page.getContent());// 设置结果集
+		map.put("totalPages", page.getTotalPages());// 设置总页数
+		map.put("totalCount", page.getTotalElements());// 设置总记录数
 		return map;
 	}
 
