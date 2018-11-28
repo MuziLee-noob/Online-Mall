@@ -269,4 +269,10 @@ public class GoodsServiceImpl implements GoodsService {
 		goodsMapper.updateByPrimaryKey(tbGoods);
 
 	}
+
+	@Override
+	public List<TbItem> findItemListByGoodsIdListAndStatus(Long[] goodsIds, String status) {
+
+		return itemMapper.findItemListByGoodsIdAndStatus(goodsIds, status);
+	}
 }

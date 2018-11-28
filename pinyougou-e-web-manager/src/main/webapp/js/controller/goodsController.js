@@ -97,6 +97,7 @@ app.controller('goodsController' ,function($scope,$controller   ,goodsService, i
 				if (response.success){
 					$scope.reloadList();
 					$scope.selectIds=[];
+					alert(response.message);
 				} else {
 					alert(response.message);
 				}

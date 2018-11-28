@@ -19,6 +19,9 @@
   <module>pinyougou-d-interface-search</module>
   <module>pinyougou-d-service-search</module>
   <module>pinyougou-e-web-search</module>
+  <module>pinyougou-d-interface-page</module>
+  <module>pinyougou-d-service-page</module>
+  <module>pinyougou-e-web-page</module>
   </modules>
 	
   <!-- 集中定义依赖版本号 -->

@@ -1,30 +1,34 @@
 package com.pinyougou.mapper;
 
-import com.pinyougou.pojo.TbItem;
-import com.pinyougou.pojo.TbItemExample;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.pinyougou.pojo.TbItem;
+import com.pinyougou.pojo.TbItemExample;
+
 public interface TbItemMapper {
-    int countByExample(TbItemExample example);
+	int countByExample(TbItemExample example);
 
-    int deleteByExample(TbItemExample example);
+	int deleteByExample(TbItemExample example);
 
-    int deleteByPrimaryKey(Long id);
+	int deleteByPrimaryKey(Long id);
 
-    int insert(TbItem record);
+	int insert(TbItem record);
 
-    int insertSelective(TbItem record);
+	int insertSelective(TbItem record);
 
-    List<TbItem> selectByExample(TbItemExample example);
+	List<TbItem> selectByExample(TbItemExample example);
 
-    TbItem selectByPrimaryKey(Long id);
+	TbItem selectByPrimaryKey(Long id);
 
-    int updateByExampleSelective(@Param("record") TbItem record, @Param("example") TbItemExample example);
+	int updateByExampleSelective(@Param("record") TbItem record, @Param("example") TbItemExample example);
 
-    int updateByExample(@Param("record") TbItem record, @Param("example") TbItemExample example);
+	int updateByExample(@Param("record") TbItem record, @Param("example") TbItemExample example);
 
-    int updateByPrimaryKeySelective(TbItem record);
+	int updateByPrimaryKeySelective(TbItem record);
 
-    int updateByPrimaryKey(TbItem record);
+	int updateByPrimaryKey(TbItem record);
+
+	List<TbItem> findItemListByGoodsIdAndStatus(@Param("ids") Long[] goodsid, @Param("status") String status);
 }

@@ -492,4 +492,18 @@
       seller = #{seller,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  
+  <select id="findItemListByGoodsIdAndStatus" resultMap="BaseResultMap">
+	  SELECT ti.*
+		FROM tb_goods tg,
+	     	tb_item ti
+		WHERE tg.id = ti.goods_id
+	    	AND tg.audit_status = #{status}
+	    	<if test="ids.length>0">
+	    		<foreach collection="ids" open="AND tg.id IN(" close=")" item="id" separator=",">
+	    			#{id}
+	    		</foreach>
+	    	</if>
+  </select>
 </mapper>
