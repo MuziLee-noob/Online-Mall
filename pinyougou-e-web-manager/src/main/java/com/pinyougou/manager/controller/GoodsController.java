@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
-import com.pinyougou.page.service.ItemPageService;
 import com.pinyougou.pojo.TbGoods;
 import com.pinyougou.pojo.TbItem;
 import com.pinyougou.pojogroup.Goods;
@@ -86,6 +85,12 @@ public class GoodsController {
 		return goodsService.findOne(id);
 	}
 
+	@Autowired
+	private Destination queueSolrDeleteDestination;
+
+	@Autowired
+	private Destination topicPageDelteDestination;
+
 	/**
 	 * 批量删除
 	 * 
@@ -93,11 +98,30 @@ public class GoodsController {
 	 * @return
 	 */
 	@RequestMapping("/delete")
-	public Result delete(Long[] ids) {
+	public Result delete(final Long[] ids) {
 		try {
 			goodsService.delete(ids);
 
 //			itemSearchService.deleteByGoodsIds(Arrays.asList(ids));
+
+			jmsTemplate.send(queueSolrDeleteDestination, new MessageCreator() {
+
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+
+					return session.createObjectMessage(ids);
+				}
+			});
+
+			// 删除详情页
+			jmsTemplate.send(topicPageDelteDestination, new MessageCreator() {
+
+				@Override
+				public Message createMessage(Session session) throws JMSException {
+
+					return session.createObjectMessage(ids);
+				}
+			});
 			return new Result(true, "删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,7 +149,10 @@ public class GoodsController {
 	private JmsTemplate jmsTemplate;
 
 	@Autowired
-	private Destination queueSolrDestination;
+	private Destination queueSolrDestination;// 用于导入solr索引库的消息目标
+
+	@Autowired
+	private Destination topicPageDestination;//
 
 	@RequestMapping("/updateStatus")
 	public Result updateStatus(Long[] ids, String status) {
@@ -146,7 +173,14 @@ public class GoodsController {
 
 				// 生成商品详情页
 				for (Long goodsId : ids) {
-					itemPageService.genItemHtml(goodsId);
+//					itemPageService.genItemHtml(goodsId);
+					jmsTemplate.send(topicPageDestination, new MessageCreator() {
+
+						@Override
+						public Message createMessage(Session session) throws JMSException {
+							return session.createTextMessage(goodsId + "");
+						}
+					});
 				}
 			}
 			return new Result(true, "成功");
@@ -168,8 +202,9 @@ public class GoodsController {
 		}
 	}
 
-	@Reference(timeout = 5000)
-	private ItemPageService itemPageService;
+	/*
+	 * @Reference(timeout = 5000) private ItemPageService itemPageService;
+	 */
 
 //	@RequestMapping("/genHtml")
 //	public void genHtml(Long goodsId) {
