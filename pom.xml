@@ -22,6 +22,9 @@
   <module>pinyougou-d-interface-page</module>
   <module>pinyougou-d-service-page</module>
   <module>pinyougou-e-web-page</module>
+  <module>pinyougou-d-interface-user</module>
+  <module>pinyougou-d-service-user</module>
+  <module>pinyougou-e-web-user</module>
   </modules>
 	
   <!-- 集中定义依赖版本号 -->
