@@ -25,6 +25,9 @@
   <module>pinyougou-d-interface-user</module>
   <module>pinyougou-d-service-user</module>
   <module>pinyougou-e-web-user</module>
+  <module>pinyougou-d-interface-cart</module>
+  <module>pinyougou-d-service-cart</module>
+  <module>pinyougou-e-web-cart</module>
   </modules>
 	
   <!-- 集中定义依赖版本号 -->
