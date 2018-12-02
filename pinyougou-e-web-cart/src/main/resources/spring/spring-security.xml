@@ -6,18 +6,18 @@
 http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security.xsd">
-
-
-    
+   
     <http pattern="/css/**" security="none"/>
     <http pattern="/img/**" security="none"/>
     <http pattern="/js/**" security="none"/>
     <http pattern="/plugins/**" security="none"/>
 
 	<http pattern="/cart.html" security="none"/>
-
+	
     <!--   entry-point-ref  入口点引用 -->
     <http use-expressions="false" entry-point-ref="casProcessingFilterEntryPoint">
+    	<!-- 匿名角色 IS_AUTHENTICATED_ANONYMOUSLY-->
+    	<intercept-url pattern="/cart/*.do" access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
         <intercept-url pattern="/**" access="ROLE_USER"/>
         <csrf disabled="true"/>
         <!-- custom-filter 为过滤器， position 表示将过滤器放在指定的位置上，before 表示放
@@ -36,7 +36,7 @@ http://www.springframework.org/schema/security/spring-security.xsd">
     </beans:bean>
     <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
         <!--service 配置自身工程的根地址+/login/cas   -->
-        <beans:property name="service" value="http://127.0.0.1:9107/login/cas"/>
+        <beans:property name="service" value="http://localhost:9107/login/cas"/>
     </beans:bean>
     <!-- CAS 入口点 结束 -->
 

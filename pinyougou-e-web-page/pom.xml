@@ -8,7 +8,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>pinyougou-e-web-page</artifactId>
-	<packaging>war</packaging>
 
 	<build>
 		<plugins>
