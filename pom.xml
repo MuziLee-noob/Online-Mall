@@ -28,6 +28,8 @@
   <module>pinyougou-d-interface-cart</module>
   <module>pinyougou-d-service-cart</module>
   <module>pinyougou-e-web-cart</module>
+  <module>pinyougou-d-interface-order</module>
+  <module>pinyougou-d-service-order</module>
   </modules>
 	
   <!-- 集中定义依赖版本号 -->

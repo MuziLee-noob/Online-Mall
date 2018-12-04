@@ -152,9 +152,8 @@
 					</div>
 					<div class="step-cont">
 						<ul class="payType">
-							<li class="{{isSelectedPayType('1')?'selected':''}}" ng-click="selectPayType('1')">微信付款<span title="点击取消选择"></span></li>
-							<li class="{{isSelectedPayType('2')?'selected':''}}" ng-click="selectPayType('2')">货到付款<span title="点击取消选择"></span></li>
-							{{order.paymentType}}
+							<li class="selected" ng-click="selectPayType('1')">微信付款<span title="点击取消选择"></span></li>
+							<li ng-click="selectPayType('2')">货到付款<span title="点击取消选择"></span></li>
 						</ul>
 					</div>
 					<div class="hr"></div>
@@ -231,7 +230,7 @@
 			<div class="fc-receiverInfo">寄送至:{{address.address}} 收货人：{{address.contact}} {{address.mobile}}</div>
 		</div>
 		<div class="submit">
-			<a class="sui-btn btn-danger btn-xlarge" href="pay.html">提交订单</a>
+			<a class="sui-btn btn-danger btn-xlarge" href="javascript:void(0);" ng-click="submitOrder()">提交订单</a>
 		</div>
 	</div>
 	<!-- 底部栏位 -->
