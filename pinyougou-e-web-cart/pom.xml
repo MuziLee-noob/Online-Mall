@@ -110,7 +110,12 @@
 			<artifactId>pinyougou-a-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>com.pinyougou</groupId>
+			<artifactId>pinyougou-d-interface-user</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+  </dependencies>
 
 
 	<build>
