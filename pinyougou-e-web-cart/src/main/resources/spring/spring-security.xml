@@ -11,7 +11,6 @@ http://www.springframework.org/schema/security/spring-security.xsd">
     <http pattern="/img/**" security="none"/>
     <http pattern="/js/**" security="none"/>
     <http pattern="/plugins/**" security="none"/>
-
 	<http pattern="/cart.html" security="none"/>
 	
     <!--   entry-point-ref  入口点引用 -->
