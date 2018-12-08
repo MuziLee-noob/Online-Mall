@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -113,19 +114,33 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
 		return new PageResult(page.getTotal(), page.getResult());
 	}
 
+	@Autowired
+	private RedisTemplate redisTemplate;
+
 	/**
 	 * 返回正在参与秒杀的商品
 	 */
 	@Override
 	public List<TbSeckillGoods> findList() {
+		List<TbSeckillGoods> seckillGoodsList = redisTemplate.boundHashOps("seckillGoods").values();
+		if (seckillGoodsList == null || seckillGoodsList.size() == 0) {
+			TbSeckillGoodsExample example = new TbSeckillGoodsExample();
+			Criteria criteria = example.createCriteria();
+			criteria.andStatusEqualTo("1");// 审核通过
+			criteria.andStockCountGreaterThan(0);// 库存大于0
+			criteria.andStartTimeLessThanOrEqualTo(new Date());
+			criteria.andEndTimeGreaterThan(new Date());
+			seckillGoodsList = seckillGoodsMapper.selectByExample(example);
+			for (TbSeckillGoods seckillGoods : seckillGoodsList) {
 
-		TbSeckillGoodsExample example = new TbSeckillGoodsExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andStatusEqualTo("1");// 审核通过
-		criteria.andStockCountGreaterThan(0);// 库存大于0
-		criteria.andStartTimeLessThanOrEqualTo(new Date());
-		criteria.andEndTimeGreaterThan(new Date());
-		return seckillGoodsMapper.selectByExample(example);
+				redisTemplate.boundHashOps("seckillGoods").put(seckillGoods.getId(), seckillGoods);
+			}
+		}
+		return seckillGoodsList;
 	}
 
+	@Override
+	public TbSeckillGoods findOneFromRedis(Long id) {
+		return (TbSeckillGoods) redisTemplate.boundHashOps("seckillGoods").get(id);
+	}
 }

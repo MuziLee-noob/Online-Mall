@@ -14,4 +14,6 @@ public interface WeiChatPayService {
 	public Map<String, String> createNative(String out_trade_no, String total_fee);
 
 	public Map<String, String> queryPayStatus(String out_trade_no);
+
+	public Map<String, String> closePay(String out_trade_no);
 }
